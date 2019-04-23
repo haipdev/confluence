@@ -62,3 +62,25 @@ async def getChildren(id, expand='version,body.storage'):
                 children.append(child)
             return children
 
+async def upload(id, name, file):
+    cfg = config.get('confluence', url=config.MANDATORY)
+    url = f'{cfg.url}content/{id}/child/attachment'
+    async with getSession() as session:
+        # first get attachment-id (if exists)
+        attachment_id = None
+        async with session.get(url) as response:
+            data = await response.json()
+            for attachment in data['results']:
+                if attachment['title'] == name:
+                    attachment_id = attachment['id']
+                    break
+        if attachment_id is not None:
+            url = f'{url}/{attachment_id}/data'
+        # create/update attachment
+        data = aiohttp.FormData()
+        data.add_field('file', open(file, 'rb'), filename=name)
+        async with session.post(url, headers={ 'X-Atlassian-Token': 'nocheck' }, data=data) as response:
+            data = await response.json()
+            return data
+
+
