@@ -45,7 +45,7 @@ import haip.config as config
 import haip.confluence as confluence
 
 config.load('/path-to-my-config-dir', 'dev')
-content = confluence.getContent('ISSUE-01')
+content = confluence.getContent(12345)
 ```
 
 ## Running the tests
