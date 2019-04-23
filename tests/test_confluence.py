@@ -32,12 +32,20 @@ async def test_setBody(setup):
 
 @pytest.mark.skip(reason="you need a running confluence server for this test")
 @pytest.mark.asyncio
+async def test_createPage(setup):
+    response = await confluence.createPage('Myspace', 256931421, 'Test Page 111', 'hello world')
+    print(response)
+    assert 'version' in response  
+
+@pytest.mark.skip(reason="you need a running confluence server for this test")
+@pytest.mark.asyncio
 async def test_getChildren(setup):
     children = await confluence.getChildren(TESTPAGEPARENT)
     assert children 
 
-# @pytest.mark.skip(reason="you need a running confluence server for this test")
+@pytest.mark.skip(reason="you need a running confluence server for this test")
 @pytest.mark.asyncio
 async def test_upload(setup):
     response = await confluence.upload(256931828, 'attachment.txt', f'{basedir}/data/attachment.txt')
     assert 'status' in response 
+

@@ -45,6 +45,28 @@ async def setBody(id, body):
                          id, current['version'], data['version']['number'])
             return data
 
+async def createPage(space, parent_id, title, body):
+    cfg = config.get('confluence', url=config.MANDATORY)
+    url = f'{cfg.url}content'
+    payload = {
+        'title': title,
+        'type': 'page',
+        'space': {
+            'key': space
+        },
+        'ancestors': [{ 'id': parent_id }],
+        'body': {
+            'storage': {
+                'value': body,
+                'representation': 'storage'
+            }
+        }
+    }
+    async with getSession() as session:
+        async with session.post(url, json=payload) as response:
+            data = await response.json()
+            return data
+        
 async def getChildren(id, expand='version,body.storage'):
     cfg = config.get('confluence', url=config.MANDATORY)
     url = f'{cfg.url}content/{id}/child/page?expand={expand}'
