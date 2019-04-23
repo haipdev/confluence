@@ -41,7 +41,7 @@ async def setBody(id, body):
     async with getSession() as session:
         async with session.put(url, json=payload) as response:
             data = await response.json()
-            _logger.info("update confluence page %d (old_version=%d, new_version=%d)", 
+            _logger.info("update confluence page %s (old_version=%s, new_version=%s)", 
                          id, current['version'], data['version']['number'])
             return data
 
