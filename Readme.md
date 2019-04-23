@@ -9,6 +9,7 @@ haip.confluence is a simple module to communicate with confluence REST API.
 
 -   **getBody**: get confluence page by id
 -   **setBody**: set confluence page content by id
+-   **getChildren**: get children of a page --> (version, title, body)
 
 ## Getting Started
 
@@ -45,7 +46,9 @@ import haip.config as config
 import haip.confluence as confluence
 
 config.load('/path-to-my-config-dir', 'dev')
-content = confluence.getContent(12345)
+content = await confluence.getBody(12345)
+page = await confluence.setBody(12345, 'hello world')
+children = await confluence.getChildren(12344)
 ```
 
 ## Running the tests

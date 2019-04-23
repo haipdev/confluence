@@ -11,7 +11,7 @@ def getSession():
         params['auth'] = aiohttp.BasicAuth(cfg.username, cfg.password)
     return aiohttp.ClientSession(**params)
 
-async def getBody(id, expand="version,body.storage"):
+async def getBody(id, expand='version,body.storage'):
     cfg = config.get('confluence', url=config.MANDATORY)
     url = f'{cfg.url}content/{id}?expand={expand}'
     async with getSession() as session:
@@ -44,3 +44,21 @@ async def setBody(id, body):
             _logger.info("update confluence page %d (old_version=%d, new_version=%d)", 
                          id, current['version'], data['version']['number'])
             return data
+
+async def getChildren(id, expand='version,body.storage'):
+    cfg = config.get('confluence', url=config.MANDATORY)
+    url = f'{cfg.url}content/{id}/child/page?expand={expand}'
+    async with getSession() as session:
+        async with session.get(url, headers={'Content-Type': 'application/json'}) as response:
+            data = await response.json()
+            children = []
+            for item in data['results']:
+                child = {
+                    'id': item['id'],
+                    'title': item['title'],
+                    'version': item['version']['number'],
+                    'body': item['body']['storage']['value']
+                }
+                children.append(child)
+            return children
+

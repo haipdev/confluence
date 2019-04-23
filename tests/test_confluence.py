@@ -8,6 +8,7 @@ logging.basicConfig()
 logger = logging.getLogger('haip')
 logger.setLevel(logging.DEBUG)
 
+TESTPAGEPARENT = 256931421
 TESTPAGEID = 256924966
 
 @pytest.fixture
@@ -27,3 +28,9 @@ async def test_getBody(setup):
 async def test_setBody(setup):
     response = await confluence.setBody(TESTPAGEID, 'hello world')
     assert 'version' in response  
+
+@pytest.mark.skip(reason="you need a running confluence server for this test")
+@pytest.mark.asyncio
+async def test_getChildren(setup):
+    children = await confluence.getChildren(TESTPAGEPARENT)
+    assert children 
