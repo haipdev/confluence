@@ -1,0 +1,4 @@
+confluence:
+    url: https://test/rest/api/
+    username: user
+    password: pass

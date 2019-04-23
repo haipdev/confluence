@@ -1,0 +1,8 @@
+python/
+.vscode/
+*egg-info/
+build/
+dist/
+**/__pycache__/
+.pytest_cache/
+tests/etc/dev
