@@ -69,7 +69,7 @@ async def createPage(space, parent_id, title, body):
         
 async def getChildren(id, expand='version,body.storage'):
     cfg = config.get('confluence', url=config.MANDATORY)
-    url = f'{cfg.url}content/{id}/child/page?expand={expand}'
+    url = f'{cfg.url}content/{id}/child/page?limit=1000&expand={expand}'
     async with getSession() as session:
         async with session.get(url, headers={'Content-Type': 'application/json'}) as response:
             data = await response.json()
